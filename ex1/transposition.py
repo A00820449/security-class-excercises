@@ -1,7 +1,7 @@
 import re
 import numpy as np
 
-columns = int(input("Size of grid?"))
+columns = int(input("Size of grid? "))
 key = re.sub(r'\s', "", input("Key? (No repeating letters supported) ").upper())
 msg = re.sub(r'\s', "", input("Message? ").upper())
 
