@@ -1,5 +1,4 @@
 import re
-import string
 
 def encode(msg, key):
     output = []
@@ -17,10 +16,11 @@ def print_binaries(arr, end='\n'):
     print("", end=end)
 
 def print_printable_chars(arr, end='\n'):
+    printable = "ABCDEFGHIJKLMNOPQRSTUVWXWZ0123456789_-\"'/\\,. "
     output = ""
     for i in arr:
         new_char = chr(i)
-        if new_char in string.printable:
+        if new_char in printable:
             output += new_char
         else:
             output += "·"
