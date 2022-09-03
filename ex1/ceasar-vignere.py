@@ -1,8 +1,8 @@
 import re
 
-message = input("Message: ").upper()
+message = re.sub(r'\s', "", input("Message: ").upper())
 
-key = input("Key: ").upper()
+key = re.sub(r'\s', "", input("Key: ").upper())
 
 def encode(msg, key):
     output = ""

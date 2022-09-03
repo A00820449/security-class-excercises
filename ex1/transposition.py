@@ -1,20 +1,21 @@
 import re
 import numpy as np
 
-columns = 5
-mat_data = [[]]
-
-msg = re.sub(r'\s', "", input("Message? ").upper())
+columns = int(input("Size of grid?"))
 key = re.sub(r'\s', "", input("Key? (No repeating letters supported) ").upper())
+msg = re.sub(r'\s', "", input("Message? ").upper())
 
+
+mat_data = [[]]
 
 orphaned = len(msg) % columns
 if orphaned > 0:
-    for i in range(0, 5 - orphaned):
+    for i in range(0, columns - orphaned):
         pad_letter = ord('A') + (i % 26)
         msg += chr(pad_letter)
 
-print("\nKey:", key)
+print("\nGrid size:", columns)
+print("Key:", key)
 print("Message:", msg)
 
 keys = list(map(ord, key))
