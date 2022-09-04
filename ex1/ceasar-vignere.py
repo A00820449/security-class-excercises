@@ -1,9 +1,5 @@
 import re
 
-message = re.sub(r'\s', "", input("Message: ").upper())
-
-key = re.sub(r'\s', "", input("Key: ").upper())
-
 def encode(msg, key):
     output = ""
     offset = ord('A')
@@ -16,7 +12,15 @@ def encode(msg, key):
             output += msg[i]
     return output
 
-print("------OUTPUT------")
-print("key:", key)
-print("message:", message)
-print("encoded:", encode(message, key))
+def main():
+
+    message = re.sub(r'\s', "", input("Message: ").upper())
+    key = re.sub(r'\s', "", input("Key: ").upper())
+
+    print("------OUTPUT------")
+    print("key:", key)
+    print("message:", message)
+    print("encoded:", encode(message, key))
+
+if __name__ == "__main__":
+    main()

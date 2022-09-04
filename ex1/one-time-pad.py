@@ -16,12 +16,10 @@ def print_binaries(arr, end='\n'):
     print("", end=end)
 
 def print_printable_chars(arr, end='\n'):
-    printable = "ABCDEFGHIJKLMNOPQRSTUVWXWZ0123456789_-\"'/\\,. "
     output = ""
     for i in arr:
-        new_char = chr(i)
-        if new_char in printable:
-            output += new_char
+        if i >= ord(' ') and i <= ord('~'):
+            output += chr(i)
         else:
             output += "·"
     print(output, end=end)
@@ -30,6 +28,10 @@ def main():
     key = re.sub(r'\s', "", input("Key? ").upper())
     msg = re.sub(r'\s', "", input("Message? ").upper())
     encoded = encode(msg, key)
+
+    print("------OUTPUT------")
+    print("Key:", key)
+    print("Message:", msg)
     print("Encoded binary: ", end="")
     print_binaries(encoded)
     print("In readable characters: ", end='')
