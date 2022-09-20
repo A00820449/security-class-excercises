@@ -1,4 +1,4 @@
-# This program generates a public and private key pair and saves them in a file called public.pem and private.pem respectively
+# This program generates a public and private key pair and saves them each in a file called public.pem and private.pem, respectively
 from Cryptodome.PublicKey import RSA
 
 keypair = RSA.generate(1024)
