@@ -1,18 +1,25 @@
 import socket
-from Cryptodome.Cipher import AES
+from Cryptodome.PublicKey import RSA
+from Cryptodome.Cipher import PKCS1_OAEP
 
-key = b'my secret key123'
-message = 'my secret message'
-cipher = AES.new(key, AES.MODE_EAX)
-encrypted = cipher.encrypt(message.encode("utf-8"))
-nonce = cipher.nonce
+public_key_pem = ""
+with open("public.pem", "r") as file:
+    public_key_pem = file.read()
 
-sendmsg = nonce + encrypted
+public_key = RSA.import_key(public_key_pem)
+
+encryptor = PKCS1_OAEP.new(public_key)
+
+message = "my secret message"
+
+encrypted = encryptor.encrypt(message.encode("utf-8"))
 
 print("Message:", message)
-print("Sending:", sendmsg)
+print("Sending:", encrypted)
 
+'''
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("127.0.0.1", 1100))
 
 s.send(sendmsg)
+'''
