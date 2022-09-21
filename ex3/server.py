@@ -11,14 +11,14 @@ with open("private.pem", "r") as file:
     private_key_pem = file.read()
 
 private_key = RSA.import_key(private_key_pem)
-encryptor = PKCS1_OAEP.new(private_key)
+decryptor = PKCS1_OAEP.new(private_key)
 
 while True:
     conn, addr = s.accept()
     data = conn.recv(4096)
     if not data: break
 
-    decrypted = encryptor.decrypt(data).decode("utf-8")
+    decrypted = decryptor.decrypt(data).decode("utf-8")
 
     print ("Received:", data)
     print("Decoded:", decrypted)
