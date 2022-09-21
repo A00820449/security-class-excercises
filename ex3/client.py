@@ -10,7 +10,8 @@ public_key = RSA.import_key(public_key_pem)
 
 encryptor = PKCS1_OAEP.new(public_key)
 
-message = "this is my very secret message"
+#message = "this is my very secret message"
+message = input("message? ")
 
 encrypted = encryptor.encrypt(message.encode("utf-8"))
 
