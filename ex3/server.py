@@ -6,11 +6,10 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 s.bind(('127.0.0.1', 1100))
 s.listen(1)
 
-private_key_pem = ""
+private_key = None
 with open("private.pem", "r") as file:
-    private_key_pem = file.read()
+    private_key = RSA.import_key(file.read())
 
-private_key = RSA.import_key(private_key_pem)
 decryptor = PKCS1_OAEP.new(private_key)
 
 while True:
@@ -20,6 +19,6 @@ while True:
 
     decrypted = decryptor.decrypt(data).decode("utf-8")
 
-    print ("Received:", data)
+    print ("Received:", data.hex())
     print("Decoded:", decrypted)
     
