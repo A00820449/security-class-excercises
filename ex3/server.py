@@ -21,4 +21,3 @@ while True:
 
     print ("Received:", data.hex())
     print("Decoded:", decrypted)
-    
