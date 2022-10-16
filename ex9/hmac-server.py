@@ -1,9 +1,11 @@
+from pydoc import cli
 import socket
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Cipher import AES
-from Cryptodome.Hash import SHA256
+from Cryptodome.Hash import HMAC, SHA256
 from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Cipher import PKCS1_OAEP
+from Cryptodome.Random import get_random_bytes
 
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 s.bind(('127.0.0.1', 1100))

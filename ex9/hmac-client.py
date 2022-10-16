@@ -1,6 +1,6 @@
 import socket
 from Cryptodome.PublicKey import RSA
-from Cryptodome.Hash import SHA256
+from Cryptodome.Hash import HMAC, SHA256
 from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.Cipher import AES
