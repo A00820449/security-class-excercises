@@ -1,7 +1,6 @@
 import socket
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Hash import HMAC, SHA256
-from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.Cipher import AES
 from Cryptodome.Random import get_random_bytes
@@ -14,9 +13,8 @@ def key_encrypt(bytes: bytes, key: bytes) -> bytes:
 
 message = "my very secret message"
 
-client_keypair = RSA.generate(1024)
-client_pubkey = client_keypair.public_key().export_key()
-signer = pkcs1_15.new(client_keypair)
+secret = b'my very secret secret'
+h = HMAC.new(secret, digestmod=SHA256)
 
 session_key = get_random_bytes(16)
 
@@ -33,16 +31,14 @@ print("Sending session key:", session_key.hex())
 s.send(encryped_session_key)
 s.recv(4096)
 
-msg = key_encrypt(client_pubkey, session_key)
-print("Sending encrypted public key:\n", client_pubkey.decode())
+msg = key_encrypt(secret, session_key)
+print("Sending secret:", secret.decode())
 s.send(msg)
 s.recv(4096)
 
-h = SHA256.new(message.encode())
-signature = signer.sign(h)
-print("signature len:", len(signature))
-message_and_signature = signature + message.encode()
-msg = key_encrypt(message_and_signature, session_key)
-print("Sending signed message:", message)
+h.update(message.encode())
+mac = h.digest()
+msg = key_encrypt(mac + message.encode(), session_key)
+print("Sending mac signed message:", message)
 s.send(msg)
 s.recv(4096)

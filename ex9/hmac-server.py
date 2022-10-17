@@ -1,11 +1,8 @@
-from pydoc import cli
 import socket
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Cipher import AES
 from Cryptodome.Hash import HMAC, SHA256
-from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Cipher import PKCS1_OAEP
-from Cryptodome.Random import get_random_bytes
 
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 s.bind(('127.0.0.1', 1100))
@@ -35,23 +32,22 @@ while True:
     print("Received session key:", session_key.hex())
     conn.send(b'ok')
 
-    encrypted_client_public_key_nonce = conn.recv(4096)
-    client_public_key_pem = key_decrypt(encrypted_client_public_key_nonce, session_key)
-    print("Received client public key:\n", client_public_key_pem.decode())
-    client_key = RSA.import_key(client_public_key_pem)
-    verifier = pkcs1_15.new(client_key)
+    encrypted_secret_nonce = conn.recv(4096)
+    secret = key_decrypt(encrypted_secret_nonce, session_key)
+    print("Received client secret:", secret.decode())    
     conn.send(b'ok')
 
-    encrypted_message_and_signature = conn.recv(4096)
-    message_and_signature = key_decrypt(encrypted_message_and_signature, session_key)
-    signature = message_and_signature[:128]
-    messsage = message_and_signature[128:]
-    print("Received message:", messsage.decode())
+    encrypted_message_mac = conn.recv(4096)
+    message_digest = key_decrypt(encrypted_message_mac, session_key)
+    mac = message_digest[:32]
+    message = message_digest[32:]
+    print("Received message:", message.decode())
     conn.send(b'ok')
 
     try:
-        h = SHA256.new(messsage)
-        verifier.verify(h, signature)
-        print("Valid signature")
-    except (ValueError, TypeError):
-        print("Not valid signature")
+        h = HMAC.new(secret, digestmod=SHA256)
+        h.update(message)
+        h.verify(mac)
+        print("Valid hmac signature")
+    except ValueError:
+        print("Not a valid hmac signature")
