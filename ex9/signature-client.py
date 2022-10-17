@@ -40,7 +40,6 @@ s.recv(4096)
 
 h = SHA256.new(message.encode())
 signature = signer.sign(h)
-print("signature len:", len(signature))
 message_and_signature = signature + message.encode()
 msg = key_encrypt(message_and_signature, session_key)
 print("Sending signed message:", message)
