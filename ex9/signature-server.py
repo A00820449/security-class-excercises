@@ -43,12 +43,12 @@ while True:
     encrypted_message_and_signature = conn.recv(4096)
     message_and_signature = key_decrypt(encrypted_message_and_signature, session_key)
     signature = message_and_signature[:128]
-    messsage = message_and_signature[128:]
-    print("Received message:", messsage.decode())
+    message = message_and_signature[128:]
+    print("Received message:", message.decode())
     conn.send(b'ok')
 
     try:
-        h = SHA256.new(messsage)
+        h = SHA256.new(message)
         verifier.verify(h, signature)
         print("Valid signature")
     except (ValueError, TypeError):
